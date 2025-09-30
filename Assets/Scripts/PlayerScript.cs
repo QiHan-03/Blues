@@ -191,6 +191,7 @@ public class Player : MonoBehaviour
         hp += itemPoints;
         hp = Mathf.Clamp(hp, 0, 596);
         healthBar.update_bar(hp);
+
         if (hp > lvl2Cap)
         {
             lvl = 3;
