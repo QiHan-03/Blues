@@ -40,6 +40,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        set_hp(0);
+
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         cameraTransform = Camera.main.transform;

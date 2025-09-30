@@ -10,7 +10,7 @@ public class EnemyScript : MonoBehaviour
     public float coolDownTime;
     public float initialTargetTime = 10;
     public float iniCoolDownTime = 10;
-    private bool targetingPlater = false;
+    private bool targetingPlayer = false;
     private bool onCoolDown = false;
     public int damagePoints = 999;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -34,13 +34,13 @@ public class EnemyScript : MonoBehaviour
         if (onCoolDown)
         {
             coolDownTime -= Time.deltaTime;
-        }
-        if (coolDownTime <= 0.0f)
-        {
-            onCoolDown = false;
+            if (coolDownTime <= 0f)
+            {
+                 onCoolDown = false;
+            }
         }
 
-        if (transform.position == target.position)
+        if (!targetingPlayer && transform.position == target.position)
         {
             random_target();
         }
@@ -51,10 +51,13 @@ public class EnemyScript : MonoBehaviour
 
     void random_target()
     {
-        if (!targetingPlater)
+        if (!targetingPlayer)
         {
             int randomNumber = UnityEngine.Random.Range(0, targets.Length);
+            Debug.Log("rand target index" + randomNumber);
             target = targets[randomNumber];
+            Debug.Log("new target" + target.transform.position);
+
         }
     }
 
@@ -62,8 +65,9 @@ public class EnemyScript : MonoBehaviour
     {
         if (other.CompareTag("Player") && !onCoolDown)
         {
-            targetingPlater = true;
+            targetingPlayer = true;
             target = other.transform;
+            Debug.Log("target is player ?" + target);
         }
     }
 
@@ -71,25 +75,28 @@ public class EnemyScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            targetingPlater = false;
+            targetingPlayer = false;
             random_target();
+
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && !onCoolDown)
         {
+            onCoolDown = true;
+            coolDownTime = iniCoolDownTime;
+            targetingPlayer = false;
+            Debug.Log("target is player but now change it");
+            random_target();
             Player otherScript = collision.gameObject.GetComponent<Player>();
             if (otherScript != null)
             {
+                Debug.Log("player cauth dmging player");
                 otherScript.take_damage(damagePoints);
-                onCoolDown = true;
-                targetingPlater = false;
-                random_target();
             }
+
         }
     }
 }
-
-
