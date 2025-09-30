@@ -198,7 +198,7 @@ public class Player : MonoBehaviour
         }else if (hp >= lvl1Cap)
         {
             lvl = 2;
-        }else if(hp <= lvl2Cap)
+        }else if(hp < lvl1Cap)
         {
             lvl = 1;
         }
