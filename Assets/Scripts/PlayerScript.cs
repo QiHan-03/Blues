@@ -30,6 +30,14 @@ public class Player : MonoBehaviour
     private float playerHeight;
     private float raycastDistance;
 
+    public int hp = 0;
+    public int lvl = 1;
+
+    public HpBarScript healthBar;
+
+    public int lvl1Cap;
+    public int lvl2Cap;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -133,5 +141,34 @@ public class Player : MonoBehaviour
             rb.linearVelocity += Vector3.up * Physics.gravity.y * ascendMultiplier * Time.fixedDeltaTime;
         }
     }
+
+    public void take_damage(int damagePoints)
+    {
+        set_hp(0-damagePoints);
+    }
+    public void drop_item(int itemPoints)
+    {
+        set_hp(0-itemPoints);
+    }
+
+    public void take_item(int itemPoints)
+    {
+        set_hp(itemPoints);
+    }
+    public void set_hp(int itemPoints)
+    {
+        hp += itemPoints;
+        hp = Mathf.Clamp(hp, 0, 596);
+        healthBar.update_bar(hp);
+        if (hp > lvl1Cap && lvl == 1) {
+            lvl = 2;
+        }
+        if (hp > lvl2Cap && lvl == 2)
+        {
+            lvl = 3;
+        }
+    }
+    
+
+
 }
- 
