@@ -29,8 +29,9 @@ public class InteractableObject : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.E) && PlayerInRange)
         {
             Debug.Log(ItemName + " Collected");
-            Destroy(gameObject.transform.parent.gameObject);
+            // Destroy(gameObject.transform.parent.gameObject);
             player.take_item(itemPoints);
+
         }
     }
 

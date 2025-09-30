@@ -105,8 +105,8 @@ public class Player : MonoBehaviour
         {
 
         }
-        directionalLight.intensity = Mathf.Clamp(((transform.position.y - 127) / 130) * 2.1f, 0f, 2.1f);
-        if (directionalLight.intensity < 0.5f)
+        directionalLight.intensity = Mathf.Clamp(((transform.position.y - 100) / 130) * 2.1f, 0f, 2.1f);
+        if (directionalLight.intensity <= 0f)
         {
             // Disable ambient light
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
@@ -190,15 +190,16 @@ public class Player : MonoBehaviour
         hp += itemPoints;
         hp = Mathf.Clamp(hp, 0, 596);
         healthBar.update_bar(hp);
-        if (hp > lvl1Cap && lvl == 1) {
-            lvl = 2;
-        }
-        if (hp > lvl2Cap && lvl == 2)
+        if (hp > lvl2Cap)
         {
             lvl = 3;
+        }else if (hp > lvl1Cap)
+        {
+            lvl = 2;
+        }else if(hp <= lvl2Cap)
+        {
+            lvl = 1;
         }
+
     }
-    
-
-
 }
