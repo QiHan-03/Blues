@@ -33,6 +33,16 @@ public class SelectionManager : MonoBehaviour
                 interaction_Info_UI.SetActive(false);
             }
 
+            if (selectionTransform.GetComponent<Barrier>() && selectionTransform.GetComponent<Barrier>().PlayerInRange)
+            {
+                interaction_text.text = selectionTransform.GetComponent<Barrier>().GetMessage();
+                interaction_Info_UI.SetActive(true);
+            }
+            else
+            {
+                interaction_Info_UI.SetActive(false);
+            }
+
         }
     }
 }
