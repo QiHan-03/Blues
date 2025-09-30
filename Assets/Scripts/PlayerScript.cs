@@ -1,3 +1,4 @@
+using UnityEditor.UI;
 using UnityEngine;
 
 /*
@@ -30,8 +31,20 @@ public class Player : MonoBehaviour
     private float playerHeight;
     private float raycastDistance;
 
+    public int hp = 0;
+    public int lvl = 1;
+
+    public HpBarScript healthBar;
+
+    public int lvl1Cap;
+    public int lvl2Cap;
+
+    public Light directionalLight;
+
     void Start()
     {
+        set_hp(0);
+
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         cameraTransform = Camera.main.transform;
@@ -47,6 +60,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        update_lights();
+
+
+
         if (Cursor.lockState != CursorLockMode.Locked)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -80,6 +97,27 @@ public class Player : MonoBehaviour
     {
         MovePlayer();
         ApplyJumpPhysics();
+    }
+
+    void update_lights()
+    {
+        if (transform.position.y > 240)
+        {
+
+        }
+        directionalLight.intensity = Mathf.Clamp(((transform.position.y - 127) / 130) * 2.1f, 0f, 2.1f);
+        if (directionalLight.intensity < 0.5f)
+        {
+            // Disable ambient light
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+            RenderSettings.ambientLight = Color.black;
+
+            // Remove skybox influence
+            RenderSettings.skybox = null;
+
+            // Turn off reflections
+            RenderSettings.reflectionIntensity = 0f;
+        }
     }
 
     void MovePlayer()
@@ -133,5 +171,34 @@ public class Player : MonoBehaviour
             rb.linearVelocity += Vector3.up * Physics.gravity.y * ascendMultiplier * Time.fixedDeltaTime;
         }
     }
+
+    public void take_damage(int damagePoints)
+    {
+        set_hp(0-damagePoints);
+    }
+    public void drop_item(int itemPoints)
+    {
+        set_hp(0-itemPoints);
+    }
+
+    public void take_item(int itemPoints)
+    {
+        set_hp(itemPoints);
+    }
+    public void set_hp(int itemPoints)
+    {
+        hp += itemPoints;
+        hp = Mathf.Clamp(hp, 0, 596);
+        healthBar.update_bar(hp);
+        if (hp > lvl1Cap && lvl == 1) {
+            lvl = 2;
+        }
+        if (hp > lvl2Cap && lvl == 2)
+        {
+            lvl = 3;
+        }
+    }
+    
+
+
 }
- 
