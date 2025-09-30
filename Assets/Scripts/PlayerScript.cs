@@ -187,6 +187,7 @@ public class Player : MonoBehaviour
     }
     public void set_hp(int itemPoints)
     {
+        int oldLvl = lvl;
         hp += itemPoints;
         hp = Mathf.Clamp(hp, 0, 596);
         healthBar.update_bar(hp);
@@ -199,6 +200,16 @@ public class Player : MonoBehaviour
         }else if(hp <= lvl2Cap)
         {
             lvl = 1;
+        }
+        if (oldLvl > lvl)
+        {
+            if(lvl == 1)
+            {
+                transform.position = new Vector3(258, 267, 88);
+            }else if (lvl == 2)
+            {
+                transform.position = new Vector3(275, 140, 250);
+            }
         }
 
     }
