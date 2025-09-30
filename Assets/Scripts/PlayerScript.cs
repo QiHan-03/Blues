@@ -60,19 +60,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        directionalLight.intensity = Mathf.Clamp(((transform.position.y - 2)/254)*2.1f, 0f, 2.1f);
-        if (directionalLight.intensity < 0.5f)
-        {
-            // Disable ambient light
-            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
-            RenderSettings.ambientLight = Color.black;
+        update_lights();
 
-            // Remove skybox influence
-            RenderSettings.skybox = null;
 
-            // Turn off reflections
-            RenderSettings.reflectionIntensity = 0f;
-        }
 
         if (Cursor.lockState != CursorLockMode.Locked)
         {
@@ -107,6 +97,27 @@ public class Player : MonoBehaviour
     {
         MovePlayer();
         ApplyJumpPhysics();
+    }
+
+    void update_lights()
+    {
+        if (transform.position.y > 240)
+        {
+
+        }
+        directionalLight.intensity = Mathf.Clamp(((transform.position.y - 127) / 130) * 2.1f, 0f, 2.1f);
+        if (directionalLight.intensity < 0.5f)
+        {
+            // Disable ambient light
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+            RenderSettings.ambientLight = Color.black;
+
+            // Remove skybox influence
+            RenderSettings.skybox = null;
+
+            // Turn off reflections
+            RenderSettings.reflectionIntensity = 0f;
+        }
     }
 
     void MovePlayer()
