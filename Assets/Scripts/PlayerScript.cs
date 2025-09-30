@@ -1,3 +1,4 @@
+using UnityEditor.UI;
 using UnityEngine;
 
 /*
@@ -38,6 +39,8 @@ public class Player : MonoBehaviour
     public int lvl1Cap;
     public int lvl2Cap;
 
+    public Light directionalLight;
+
     void Start()
     {
         set_hp(0);
@@ -57,6 +60,20 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        directionalLight.intensity = Mathf.Clamp(((transform.position.y - 2)/254)*2.1f, 0f, 2.1f);
+        if (directionalLight.intensity < 0.5f)
+        {
+            // Disable ambient light
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+            RenderSettings.ambientLight = Color.black;
+
+            // Remove skybox influence
+            RenderSettings.skybox = null;
+
+            // Turn off reflections
+            RenderSettings.reflectionIntensity = 0f;
+        }
+
         if (Cursor.lockState != CursorLockMode.Locked)
         {
             Cursor.lockState = CursorLockMode.Locked;
